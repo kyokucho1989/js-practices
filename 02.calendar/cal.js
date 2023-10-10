@@ -4,12 +4,11 @@ import minimist from "minimist";
 import dayjs from "dayjs";
 
 const argv = minimist(process.argv);
-const month = argv["m"] === undefined ? dayjs().month() + 1 : argv["m"];
-const year = argv["y"] === undefined ? dayjs().year() : argv["y"];
-
-const monthIndex = month - 1;
-const weekdayShift = dayjs(new Date(year, monthIndex, 1)).day();
-const monthEndDate = dayjs(new Date(year, monthIndex + 1, 0)).date();
+const generatedDate = dayjs();
+const month = argv["m"] ?? generatedDate.month() + 1;
+const year = argv["y"] ?? generatedDate.year();
+const weekdayShift = dayjs(new Date(year, month - 1, 1)).day();
+const monthEndDate = dayjs(new Date(year, month, 0)).date();
 
 console.log(`      ${month}月  ${year}`);
 console.log(`日 月 火 水 木 金 土`);
