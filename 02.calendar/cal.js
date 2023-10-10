@@ -17,7 +17,7 @@ process.stdout.write("   ".repeat(weekdayShift));
 for (let day = 1; day <= monthEndDate; day++) {
   process.stdout.write(day.toString().padStart(2, " ") + " ");
   if ((day + weekdayShift) % 7 == 0) {
-    console.log("");
+    console.log();
   }
 }
-console.log("");
+if (weekdayShift !== 5 ) console.log();
