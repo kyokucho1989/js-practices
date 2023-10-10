@@ -11,7 +11,7 @@ const weekdayShift = dayjs(new Date(year, month - 1, 1)).day();
 const monthEndDate = dayjs(new Date(year, month, 0)).date();
 
 console.log(`      ${month}月  ${year}`);
-console.log(`日 月 火 水 木 金 土`);
+console.log("日 月 火 水 木 金 土");
 process.stdout.write("   ".repeat(weekdayShift));
 for (let day = 1; day <= monthEndDate; day++) {
   process.stdout.write(day.toString().padStart(2, " ") + " ");
