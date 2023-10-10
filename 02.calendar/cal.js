@@ -19,4 +19,4 @@ for (let day = 1; day <= monthEndDate; day++) {
     console.log();
   }
 }
-if (weekdayShift !== 5 ) console.log();
+if (weekdayShift !== 5) console.log();
