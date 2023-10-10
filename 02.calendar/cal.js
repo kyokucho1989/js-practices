@@ -5,8 +5,8 @@ import dayjs from "dayjs";
 
 const argv = minimist(process.argv);
 const generatedDate = dayjs();
-const month = argv["m"] ?? generatedDate.month() + 1;
-const year = argv["y"] ?? generatedDate.year();
+const month = argv.m ?? generatedDate.month() + 1;
+const year = argv.y ?? generatedDate.year();
 const weekdayShift = dayjs(new Date(year, month - 1, 1)).day();
 const monthEndDate = dayjs(new Date(year, month, 0)).date();
 
