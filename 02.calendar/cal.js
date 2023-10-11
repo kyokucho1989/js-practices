@@ -19,4 +19,6 @@ for (let date = 1; date <= monthEndDate; date++) {
     console.log();
   }
 }
-if (monthBeginningDayOfWeek !== 5) console.log();
+if (monthBeginningDayOfWeek !== 5){
+  console.log();
+} 
