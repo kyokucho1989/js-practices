@@ -4,9 +4,9 @@ import minimist from "minimist";
 import dayjs from "dayjs";
 
 const argv = minimist(process.argv);
-const dateDisplayInCalendar = dayjs();
-const month = argv.m ?? dateDisplayInCalendar.month() + 1;
-const year = argv.y ?? dateDisplayInCalendar.year();
+const now = dayjs();
+const month = argv.m ?? now.month() + 1;
+const year = argv.y ?? now.year();
 const monthBeginningDayOfWeek = dayjs(new Date(year, month - 1, 1)).day();
 const monthEndDate = dayjs(new Date(year, month, 0)).date();
 
