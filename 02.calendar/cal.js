@@ -19,3 +19,6 @@ for (let date = monthBeginningDay ; date.date() !== monthEndDay.date(); date = d
     console.log();
   }
 }
+if (monthEndDay.day() !== 0){
+  console.log();
+}
