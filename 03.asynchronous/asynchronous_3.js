@@ -67,10 +67,11 @@ async function f1() {
     item_id = await insertItem("item");
     console.log(item_id);
     console.log(await selectItem(item_id));
-    console.log(await dropTable());
+    
   } catch (err) {
     console.log(err);
   }
+  console.log(await dropTable());
 }
 
 f1();
@@ -95,10 +96,11 @@ async function f2() {
 
   try {
     console.log(await selectItem(item_id));
-    console.log(await dropTable());
+    
   } catch (err) {
     console.log(err.message);
   }
+  console.log(await dropTable());
 }
 
 f2();
