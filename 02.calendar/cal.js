@@ -23,9 +23,10 @@ for (
   day = day.add(1, "day")
 ) {
   process.stdout.write(day.date().toString().padStart(2, " ") + " ");
-  if (day.day() === 6 && day.date() !== monthEndDay.date()) {
+  if (
+    (day.day() === 6 && day.date() !== monthEndDay.date()) ||
+    day.date() === monthEndDay.date()
+  ) {
     console.log();
   }
 }
-
-console.log();
