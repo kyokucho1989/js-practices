@@ -16,59 +16,95 @@ function createDatabase() {
   });
 }
 
-// function insertItem(itemName = null) {
-//   return new Promise(function (onFulfilled, onRejected) {
-//     db.run(
-//       `INSERT INTO lorem2 (title) VALUES (?) `,
-//       [itemName],
-//       function (err) {
-//         if (err) {
-//           return onRejected(new Error(err));
-//         } else {
-//           onFulfilled(this.lastID);
-//         }
-//       }
-//     );
-//   });
-// }
+function insertItem(itemName = null) {
+  return new Promise(function (onFulfilled, onRejected) {
+    db.run(
+      `INSERT INTO lorem2 (title) VALUES (?) `,
+      [itemName],
+      function (err) {
+        if (err) {
+          return onRejected(new Error(err));
+        } else {
+          onFulfilled(this.lastID);
+        }
+      }
+    );
+  });
+}
 
-// function selectItem(id) {
-//   return new Promise(function (onFulfilled, onRejected) {
-//     db.get(`SELECT * FROM lorem2 WHERE rowid = ?`, [id], function (err, rows) {
-//       if (err) {
-//         return onRejected(new Error(err));
-//       } else if (rows === undefined) {
-//         return onRejected(new Error("レコードが見つかりません"));
-//       } else {
-//         onFulfilled(rows);
-//       }
-//     });
-//   });
-// }
+function selectItem(id) {
+  return new Promise(function (onFulfilled, onRejected) {
+    db.get(`SELECT * FROM lorem2 WHERE rowid = ?`, [id], function (err, rows) {
+      if (err) {
+        return onRejected(new Error(err));
+      } else if (rows === undefined) {
+        return onRejected(new Error("レコードが見つかりません"));
+      } else {
+        onFulfilled(rows);
+      }
+    });
+  });
+}
 
-// function dropTable() {
-//   return new Promise(function (onFulfilled, onRejected) {
-//     db.run("DROP TABLE lorem2", [], function (err) {
-//       if (err) {
-//         return onRejected(new Error(err));
-//       } else {
-//         onFulfilled("テーブル削除完了");
-//       }
-//     });
-//   });
-// }
+function dropTable() {
+  return new Promise(function (onFulfilled, onRejected) {
+    db.run("DROP TABLE lorem2", [], function (err) {
+      if (err) {
+        return onRejected(new Error(err));
+      } else {
+        onFulfilled("テーブル削除完了");
+      }
+    });
+  });
+}
 
 // エラーなし
 
 async function f1(){
+  let item_id
   try {
-    await createDatabase()
-  } catch{
-    console.log("a");
+    console.log(await createDatabase());
+    item_id = await insertItem('item');
+    console.log(item_id);
+    console.log(await selectItem(item_id));
+    console.log(await dropTable());
+  } catch(err){
+    console.log(err);
   }
 }
 
 f1();
+
+await timers.setTimeout(1000);
+
+// エラーあり
+async function f2(){
+  let item_id
+  try {
+    console.log(await createDatabase());
+  } catch(err){
+    console.log(err);
+  }
+
+  try{
+    item_id = await insertItem();
+    console.log(item_id);
+  } catch(err){
+    console.log(err.message);
+  }
+
+  try{
+    console.log(await selectItem(item_id));
+    console.log(await dropTable());
+  } catch(err) {
+    console.log(err.message);
+  }
+}
+
+
+
+f2();
+
 //   createDatabase()
 //   .then(function (msg) {
 //     console.log(msg);
@@ -101,4 +137,4 @@ f1();
 
 
 
-// await timers.setTimeout(1000);
+
