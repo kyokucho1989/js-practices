@@ -14,13 +14,17 @@ const monthEndDay = dayjs(new Date(year, month, 0));
 console.log(`      ${month}月  ${year}`);
 console.log("日 月 火 水 木 金 土");
 process.stdout.write("   ".repeat(monthBeginningDay.day()));
-for (let date = monthBeginningDay ; date.isSameOrBefore(monthEndDay, 'date') ; date = date.add(1, 'day')){
+for (
+  let date = monthBeginningDay;
+  date.isSameOrBefore(monthEndDay, "date");
+  date = date.add(1, "day")
+) {
   process.stdout.write(date.date().toString().padStart(2, " ") + " ");
   if (date.day() === 6 && date.date() !== monthEndDay.date()) {
     console.log();
   }
 }
 
-if (monthEndDay.day() !== 0){
+if (monthEndDay.day() !== 0) {
   console.log();
 }
