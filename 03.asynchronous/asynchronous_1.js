@@ -5,14 +5,12 @@ const db = new sqlite3.Database(":memory:");
 const db2 = new sqlite3.Database(":memory:");
 
 // コールバック
-db.run("CREATE TABLE lorem (title TEXT)", [], () => {
+db.run("CREATE TABLE lorem (title TEXT NOT NULL)", [], () => {
   db.run("INSERT INTO lorem (title) VALUES ('本のタイトル') ", [], function () {
     console.log("挿入された行のID:", this.lastID);
-    db.all("SELECT rowid AS id, title FROM lorem", function (err, rows) {
-      rows.forEach((row) => {
-        console.log("ID:", row.id);
-        console.log("Title:", row.title);
-      });
+    let id = this.lastID
+    db.get(`SELECT * FROM lorem WHERE rowid = ?`, [id], function (err, rows) {
+      console.log(rows);
     });
   });
 });
@@ -21,24 +19,23 @@ db.close(f2);
 
 // コールバック エラーあり
 function f2() {
-  db2.run("CREATE TABLE lorem2 (title TEXT)", [], () => {
+  db2.run("CREATE TABLE lorem2 (title TEXT NOT NULL)", [], () => {
     db2.run(
       "INSERT INTO lorem2 (title2) VALUES ('本のタイトル2') ",
       [],
       function (err) {
+        let id
         if (err) {
           console.error(err.message);
         } else {
           console.log("挿入された行のID:", this.lastID);
+          id = this.lastID;
         }
-        db2.all("SELECT rowid AS id, titl FROM lorem2", function (err, rows) {
+        db2.get(`SELECT * FROM lorem2 WHERE rowid = ?`, [id], function (err, rows) {
           if (err) {
             console.error(err.message);
-          } else {
-            rows.forEach((row) => {
-              console.log("ID:", row.id);
-              console.log("Title:", row.title);
-            });
+          } else if (rows === undefined) {
+            return console.log("レコードが見つかりません");
           }
         });
       }
