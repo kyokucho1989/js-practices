@@ -60,15 +60,15 @@ function dropTable() {
 
 // エラーなし
 
-async function f1(){
-  let item_id
+async function f1() {
+  let item_id;
   try {
     console.log(await createDatabase());
-    item_id = await insertItem('item');
+    item_id = await insertItem("item");
     console.log(item_id);
     console.log(await selectItem(item_id));
     console.log(await dropTable());
-  } catch(err){
+  } catch (err) {
     console.log(err);
   }
 }
@@ -78,30 +78,28 @@ f1();
 await timers.setTimeout(1000);
 
 // エラーあり
-async function f2(){
-  let item_id
+async function f2() {
+  let item_id;
   try {
     console.log(await createDatabase());
-  } catch(err){
+  } catch (err) {
     console.log(err);
   }
 
-  try{
+  try {
     item_id = await insertItem();
     console.log(item_id);
-  } catch(err){
+  } catch (err) {
     console.log(err.message);
   }
 
-  try{
+  try {
     console.log(await selectItem(item_id));
     console.log(await dropTable());
-  } catch(err) {
+  } catch (err) {
     console.log(err.message);
   }
 }
-
-
 
 f2();
 
@@ -134,7 +132,3 @@ f2();
 //   .then(function () {
 //     console.log("テーブル削除完了");
 //   });
-
-
-
-

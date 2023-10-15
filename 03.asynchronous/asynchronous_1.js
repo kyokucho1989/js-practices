@@ -8,7 +8,7 @@ const db2 = new sqlite3.Database(":memory:");
 db.run("CREATE TABLE lorem (title TEXT NOT NULL)", [], () => {
   db.run("INSERT INTO lorem (title) VALUES ('本のタイトル') ", [], function () {
     console.log("挿入された行のID:", this.lastID);
-    let id = this.lastID
+    let id = this.lastID;
     db.get(`SELECT * FROM lorem WHERE rowid = ?`, [id], function (err, rows) {
       console.log(rows);
     });
@@ -24,20 +24,24 @@ function f2() {
       "INSERT INTO lorem2 (title2) VALUES ('本のタイトル2') ",
       [],
       function (err) {
-        let id
+        let id;
         if (err) {
           console.error(err.message);
         } else {
           console.log("挿入された行のID:", this.lastID);
           id = this.lastID;
         }
-        db2.get(`SELECT * FROM lorem2 WHERE rowid = ?`, [id], function (err, rows) {
-          if (err) {
-            console.error(err.message);
-          } else if (rows === undefined) {
-            return console.log("レコードが見つかりません");
+        db2.get(
+          `SELECT * FROM lorem2 WHERE rowid = ?`,
+          [id],
+          function (err, rows) {
+            if (err) {
+              console.error(err.message);
+            } else if (rows === undefined) {
+              return console.log("レコードが見つかりません");
+            }
           }
-        });
+        );
       }
     );
   });
