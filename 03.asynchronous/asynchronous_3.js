@@ -67,7 +67,6 @@ async function f1() {
     item_id = await insertItem("item");
     console.log(item_id);
     console.log(await selectItem(item_id));
-    
   } catch (err) {
     console.log(err);
   }
@@ -96,7 +95,6 @@ async function f2() {
 
   try {
     console.log(await selectItem(item_id));
-    
   } catch (err) {
     console.log(err.message);
   }
