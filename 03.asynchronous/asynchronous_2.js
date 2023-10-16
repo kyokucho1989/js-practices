@@ -87,6 +87,9 @@ createDatabase()
   })
   .then(function () {
     console.log("テーブル削除完了");
+  })
+  .finally(function () {
+    db.close();
   });
 
 await timers.setTimeout(1000);
