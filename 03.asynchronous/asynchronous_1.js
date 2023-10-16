@@ -11,6 +11,9 @@ db.run("CREATE TABLE lorem (title TEXT NOT NULL)", [], () => {
     let id = this.lastID;
     db.get(`SELECT * FROM lorem WHERE rowid = ?`, [id], function (err, rows) {
       console.log(rows);
+      db.run("DROP TABLE lorem", [], function () {
+        console.log("テーブル削除完了");
+      });
     });
   });
 });
@@ -38,8 +41,11 @@ function f2() {
             if (err) {
               console.error(err.message);
             } else if (rows === undefined) {
-              return console.log("レコードが見つかりません");
+              console.log("レコードが見つかりません");
             }
+            db2.run("DROP TABLE lorem2", [], function () {
+              console.log("テーブル削除完了");
+            });
           }
         );
       }
