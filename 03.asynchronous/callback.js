@@ -9,13 +9,16 @@ const db = new sqlite3.Database(":memory:");
 db.run("CREATE TABLE books (title TEXT NOT NULL)", [], () => {
   db.run("INSERT INTO books (title) VALUES ('本のタイトル') ", [], function () {
     console.log("挿入された行のID:", this.lastID);
-    let id = this.lastID;
-    db.get(`SELECT * FROM books WHERE rowid = ?`, [id], function (err, rows) {
-      console.log(rows);
-      db.run("DROP TABLE books", [], function () {
-        console.log("テーブル削除完了");
-      });
-    });
+    db.get(
+      `SELECT * FROM books WHERE rowid = ?`,
+      this.lastID,
+      function (err, selectedBook) {
+        console.log(selectedBook);
+        db.run("DROP TABLE books", [], function () {
+          console.log("テーブル削除完了");
+        });
+      }
+    );
   });
 });
 
@@ -34,16 +37,20 @@ db.run("CREATE TABLE books (title TEXT NOT NULL)", [], () => {
         console.log("挿入された行のID:", this.lastID);
         id = this.lastID;
       }
-      db.get(`SELECT * FROM books WHERE rowid = ?`, [id], function (err, rows) {
-        if (err) {
-          console.error(err.message);
-        } else if (rows === undefined) {
-          console.log("レコードが見つかりません");
+      db.get(
+        `SELECT * FROM books WHERE rowid = ?`,
+        id,
+        function (err, selectedBook) {
+          if (err) {
+            console.error(err.message);
+          } else if (selectedBook === undefined) {
+            console.log("レコードが見つかりません");
+          }
+          db.run("DROP TABLE books", [], function () {
+            console.log("テーブル削除完了");
+          });
         }
-        db.run("DROP TABLE books", [], function () {
-          console.log("テーブル削除完了");
-        });
-      });
+      );
     }
   );
   db.close();
