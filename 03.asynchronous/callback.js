@@ -12,7 +12,7 @@ db.run("CREATE TABLE books (title TEXT NOT NULL)", () => {
     db.get(
       `SELECT * FROM books WHERE rowid = ?`,
       this.lastID,
-      function (err, selectedBook) {
+      (err, selectedBook) => {
         console.log(selectedBook);
         db.run("DROP TABLE books", function () {
           console.log("テーブル削除完了");
@@ -36,20 +36,16 @@ db.run("CREATE TABLE books (title TEXT NOT NULL)", () => {
         console.log("挿入された行のID:", this.lastID);
         id = this.lastID;
       }
-      db.get(
-        `SELECT * FROM books WHERE rowid = ?`,
-        id,
-        function (err, selectedBook) {
-          if (err) {
-            console.error(err.message);
-          } else if (selectedBook === undefined) {
-            console.log("レコードが見つかりません");
-          }
-          db.run("DROP TABLE books", function () {
-            console.log("テーブル削除完了");
-          });
+      db.get(`SELECT * FROM books WHERE rowid = ?`, id, (err, selectedBook) => {
+        if (err) {
+          console.error(err.message);
+        } else if (selectedBook === undefined) {
+          console.log("レコードが見つかりません");
         }
-      );
+        db.run("DROP TABLE books", function () {
+          console.log("テーブル削除完了");
+        });
+      });
     }
   );
   db.close();
