@@ -22,27 +22,22 @@ await timers.setTimeout(1000);
 
 // コールバック エラーあり
 db.run("CREATE TABLE books (title TEXT NOT NULL)", () => {
-  db.run(
-    "INSERT INTO books (title2) VALUES ('本のタイトル2') ",
-    function (err) {
-      let id;
+  db.run("INSERT INTO books (title) VALUES (null) ", function (err) {
+    if (err) {
+      console.error(err.message);
+    } else {
+      console.log("挿入された行のID:", this.lastID);
+    }
+    db.get(`SELECT * FROM books WHERE rowid = ?`, this.lastID, (err, book) => {
       if (err) {
         console.error(err.message);
-      } else {
-        console.log("挿入された行のID:", this.lastID);
-        id = this.lastID;
+      } else if (book === undefined) {
+        console.log("レコードが見つかりません");
       }
-      db.get(`SELECT * FROM books WHERE rowid = ?`, id, (err, book) => {
-        if (err) {
-          console.error(err.message);
-        } else if (book === undefined) {
-          console.log("レコードが見つかりません");
-        }
-        db.run("DROP TABLE books", function () {
-          console.log("テーブル削除完了");
-        });
+      db.run("DROP TABLE books", function () {
+        console.log("テーブル削除完了");
       });
-    }
-  );
+    });
+  });
   db.close();
 });
