@@ -11,7 +11,7 @@ db.run("CREATE TABLE books (title TEXT NOT NULL)", () => {
     console.log("挿入された行のID:", this.lastID);
     db.get(`SELECT * FROM books WHERE rowid = ?`, this.lastID, (_err, book) => {
       console.log(book);
-      db.run("DROP TABLE books", function () {
+      db.run("DROP TABLE books", () => {
         console.log("テーブル削除完了");
       });
     });
@@ -34,7 +34,7 @@ db.run("CREATE TABLE books (title TEXT NOT NULL)", () => {
       } else {
         console.log(book);
       }
-      db.run("DROP TABLE books", function () {
+      db.run("DROP TABLE books", () => {
         console.log("テーブル削除完了");
         db.close();
       });
