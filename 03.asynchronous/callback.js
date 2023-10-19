@@ -28,11 +28,11 @@ db.run("CREATE TABLE books (title TEXT NOT NULL)", () => {
     } else {
       console.log("挿入された行のID:", this.lastID);
     }
-    db.get(`SELECT * FROM books WHERE rowid = ?`, this.lastID, (err, book) => {
+    db.get(`SELECT * FROM bookss WHERE rowid = ?`, this.lastID, (err, book) => {
       if (err) {
         console.error(err.message);
-      } else if (book === undefined) {
-        console.log("レコードが見つかりません");
+      } else {
+        console.log(book);
       }
       db.run("DROP TABLE books", function () {
         console.log("テーブル削除完了");
