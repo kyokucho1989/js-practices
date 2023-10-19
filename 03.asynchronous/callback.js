@@ -36,8 +36,8 @@ db.run("CREATE TABLE books (title TEXT NOT NULL)", () => {
       }
       db.run("DROP TABLE books", function () {
         console.log("テーブル削除完了");
+        db.close();
       });
     });
   });
-  db.close();
 });
