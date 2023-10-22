@@ -5,33 +5,21 @@ import timers from "timers/promises";
 
 const db = new sqlite3.Database(":memory:");
 
-function createDatabase() {
+function run(db, SQL, params = []) {
   return new Promise(function (resolve, reject) {
-    db.run("CREATE TABLE books (title TEXT NOT NULL)", (err) => {
+    db.run(SQL, params, function (err) {
       if (err) {
         reject(err);
       } else {
-        resolve("テーブル作成完了");
+        resolve(this);
       }
     });
   });
 }
 
-function insertItem(itemName = null) {
+function get(db, SQL, params = []) {
   return new Promise(function (resolve, reject) {
-    db.run("INSERT INTO books (title) VALUES (?) ", itemName, function (err) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(this.lastID);
-      }
-    });
-  });
-}
-
-function selectItem(dbName, id) {
-  return new Promise(function (resolve, reject) {
-    db.get(`SELECT * FROM ${dbName} WHERE rowid = ?`, id, (err, rows) => {
+    db.get(SQL, params, (err, rows) => {
       if (err) {
         reject(err);
       } else {
@@ -41,62 +29,43 @@ function selectItem(dbName, id) {
   });
 }
 
-function dropTable() {
-  return new Promise((resolve, reject) => {
-    db.run("DROP TABLE books", (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve("テーブル削除完了");
-      }
-    });
-  });
-}
-
 // エラーなし
-createDatabase()
-  .then(function (msg) {
-    console.log(msg);
-    return insertItem("本のタイトル");
+run(db, "CREATE TABLE books (title TEXT NOT NULL)")
+  .then(function () {
+    return run(db, "INSERT INTO books (title) VALUES (?) ", "本のタイトル");
   })
-  .then(function (id) {
-    console.log("挿入された行のID:", id);
-    return selectItem("books", id);
+  .then(function (obj) {
+    console.log(`挿入された行のID: ${obj.lastID}`);
+    return get(db, "SELECT * FROM books WHERE rowid = ?", obj.lastID);
   })
   .then(function (msg) {
     console.log(msg);
   })
   .then(function () {
-    return dropTable();
-  })
-  .then(function (msg) {
-    console.log(msg);
+    return run(db, "DROP TABLE books");
   });
 
 await timers.setTimeout(1000);
 
 // エラーあり
-createDatabase()
-  .then(function (msg) {
-    console.log(msg);
-    return insertItem();
+run(db, "CREATE TABLE books (title TEXT NOT NULL)")
+  .then(function () {
+    return run(db, "INSERT INTO books (title) VALUES (?) ", null);
   })
   .catch(function (err) {
     console.error("エラーが発生しました:", err.message);
+    return get(db, "SELECT * FROM bookss WHERE rowid = ?", 1);
   })
-  .then(function (id) {
-    console.log("挿入された行のID:", id);
-    return selectItem("bookss", id);
+  .then(function (obj) {
+    console.log(`挿入された行のID: ${obj.lastID}`);
+    return get(db, "SELECT * FROM books WHERE rowid = ?", obj.lastID);
   })
   .catch(function (err) {
     console.error("エラーが発生しました:", err.message);
-  })
-  .then(function (msg) {
-    console.log(msg);
   })
   .then(function () {
-    return dropTable();
+    return run(db, "DROP TABLE books");
   })
-  .then(function (msg) {
-    console.log(msg);
+  .then(function () {
+    db.close();
   });
