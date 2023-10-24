@@ -2,32 +2,10 @@
 
 import sqlite3 from "sqlite3";
 import timers from "timers/promises";
+import { run } from "./sqlite-function.js";
+import { get } from "./sqlite-function.js";
 
 const db = new sqlite3.Database(":memory:");
-
-function run(db, SQL, params = []) {
-  return new Promise(function (resolve, reject) {
-    db.run(SQL, params, function (err) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(this);
-      }
-    });
-  });
-}
-
-function get(db, SQL, params = []) {
-  return new Promise(function (resolve, reject) {
-    db.get(SQL, params, (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
-}
 
 async function promiseOk() {
   await run(db, "CREATE TABLE books (title TEXT NOT NULL)");
