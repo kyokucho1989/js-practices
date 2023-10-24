@@ -42,7 +42,8 @@ run(db, "CREATE TABLE books (title TEXT NOT NULL)")
     console.log(msg);
   })
   .then(function () {
-    return run(db, "DROP TABLE books");
+    run(db, "DROP TABLE books");
+    return console.log("テーブル削除完了");
   });
 
 await timers.setTimeout(1000);
@@ -64,7 +65,8 @@ run(db, "CREATE TABLE books (title TEXT NOT NULL)")
     console.error("エラーが発生しました:", err.message);
   })
   .then(function () {
-    return run(db, "DROP TABLE books");
+    run(db, "DROP TABLE books");
+    return console.log("テーブル削除完了");
   })
   .then(function () {
     db.close();

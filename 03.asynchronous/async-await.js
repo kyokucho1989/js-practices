@@ -44,6 +44,7 @@ async function promiseOk() {
   );
   console.log(selectedResult);
   run(db, "DROP TABLE books");
+  console.log("テーブル削除完了");
 }
 
 async function promiseError() {
@@ -63,7 +64,7 @@ async function promiseError() {
         insertedResult.lastID
       );
     } catch (err) {
-      console.log(err.message);
+      console.error("エラーが発生しました:", err.message);
       selectedResult = await get(db, "SELECT * FROM bookss WHERE rowid = ?", 1);
     }
     try {
@@ -75,13 +76,13 @@ async function promiseError() {
       );
       console.log(selectedResult);
     } catch (err) {
-      console.log(err.message);
+      console.error("エラーが発生しました:", err.message);
     }
   } catch (err) {
-    console.log(err.message);
+    console.error("エラーが発生しました:", err.message);
   } finally {
     run(db, "DROP TABLE books");
-    console.log("テーブル削除");
+    console.log("テーブル削除完了");
     db.close();
   }
 }
