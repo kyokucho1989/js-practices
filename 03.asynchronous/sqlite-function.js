@@ -1,8 +1,8 @@
 export { run, get };
 
-function run(db, SQL, params = []) {
-  return new Promise(function (resolve, reject) {
-    db.run(SQL, params, function (err) {
+function run(db, sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
       if (err) {
         reject(err);
       } else {
@@ -12,9 +12,9 @@ function run(db, SQL, params = []) {
   });
 }
 
-function get(db, SQL, params = []) {
-  return new Promise(function (resolve, reject) {
-    db.get(SQL, params, (err, rows) => {
+function get(db, sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.get(sql, params, (err, rows) => {
       if (err) {
         reject(err);
       } else {
