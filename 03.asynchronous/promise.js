@@ -12,12 +12,14 @@ run(db, "CREATE TABLE books (title TEXT NOT NULL)")
   .then(() =>
     run(db, "INSERT INTO books (title) VALUES (?) ", ["本のタイトル"])
   )
-  .then(function (obj) {
-    console.log(`挿入された行のID: ${obj.lastID}`);
-    return get(db, "SELECT * FROM books WHERE rowid = ?", [obj.lastID]);
+  .then(function (insertedBook) {
+    console.log(`挿入された行のID: ${insertedBook.lastID}`);
+    return get(db, "SELECT * FROM books WHERE rowid = ?", [
+      insertedBook.lastID
+    ]);
   })
-  .then(function (msg) {
-    console.log(msg);
+  .then(function (selectedBook) {
+    console.log(selectedBook);
   })
   .then(function () {
     run(db, "DROP TABLE books");
@@ -33,9 +35,11 @@ run(db, "CREATE TABLE books (title TEXT NOT NULL)")
     console.error("エラーが発生しました:", err.message);
     return get(db, "SELECT * FROM bookss WHERE rowid = ?", [1]);
   })
-  .then(function (obj) {
-    console.log(`挿入された行のID: ${obj.lastID}`);
-    return get(db, "SELECT * FROM books WHERE rowid = ?", [obj.lastID]);
+  .then(function (insertedBook) {
+    console.log(`挿入された行のID: ${insertedBook.lastID}`);
+    return get(db, "SELECT * FROM books WHERE rowid = ?", [
+      insertedBook.lastID
+    ]);
   })
   .catch(function (err) {
     console.error("エラーが発生しました:", err.message);

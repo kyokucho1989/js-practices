@@ -9,46 +9,42 @@ const db = new sqlite3.Database(":memory:");
 
 async function promiseOk() {
   await run(db, "CREATE TABLE books (title TEXT NOT NULL)");
-  const insertedResult = await run(
-    db,
-    "INSERT INTO books (title) VALUES (?) ",
-    ["本のタイトル"]
-  );
-  console.log(`挿入された行のID: ${insertedResult.lastID}`);
-  const selectedResult = await get(db, "SELECT * FROM books WHERE rowid = ?", [
-    insertedResult.lastID
+  const insertedBook = await run(db, "INSERT INTO books (title) VALUES (?) ", [
+    "本のタイトル"
   ]);
-  console.log(selectedResult);
+  console.log(`挿入された行のID: ${insertedBook.lastID}`);
+  const selectedBook = await get(db, "SELECT * FROM books WHERE rowid = ?", [
+    insertedBook.lastID
+  ]);
+  console.log(selectedBook);
   run(db, "DROP TABLE books");
   console.log("テーブル削除完了");
 }
 
 async function promiseError() {
-  let insertedResult, selectedResult;
+  let insertedBook, selectedBook;
   try {
     await run(db, "CREATE TABLE books (title TEXT NOT NULL)");
     try {
-      insertedResult = await run(
+      insertedBook = await run(
         db,
         "INSERT INTO books (title) VALUES (?) ",
         null
       );
-      console.log(`挿入された行のID: ${insertedResult.lastID}`);
-      selectedResult = await get(db, "SELECT * FROM books WHERE rowid = ?", [
-        insertedResult.lastID
+      console.log(`挿入された行のID: ${insertedBook.lastID}`);
+      selectedBook = await get(db, "SELECT * FROM books WHERE rowid = ?", [
+        insertedBook.lastID
       ]);
     } catch (err) {
       console.error("エラーが発生しました:", err.message);
-      selectedResult = await get(db, "SELECT * FROM bookss WHERE rowid = ?", [
-        1
-      ]);
+      selectedBook = await get(db, "SELECT * FROM bookss WHERE rowid = ?", [1]);
     }
     try {
-      console.log(insertedResult);
-      selectedResult = await get(db, "SELECT * FROM books WHERE rowid = ?", [
-        insertedResult.lastID
+      console.log(insertedBook);
+      selectedBook = await get(db, "SELECT * FROM books WHERE rowid = ?", [
+        insertedBook.lastID
       ]);
-      console.log(selectedResult);
+      console.log(selectedBook);
     } catch (err) {
       console.error("エラーが発生しました:", err.message);
     }
