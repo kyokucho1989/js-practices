@@ -9,10 +9,12 @@ const db = new sqlite3.Database(":memory:");
 
 // エラーなし
 run(db, "CREATE TABLE books (title TEXT NOT NULL)")
-  .then(() => run(db, "INSERT INTO books (title) VALUES (?) ", "本のタイトル"))
+  .then(() =>
+    run(db, "INSERT INTO books (title) VALUES (?) ", ["本のタイトル"])
+  )
   .then(function (obj) {
     console.log(`挿入された行のID: ${obj.lastID}`);
-    return get(db, "SELECT * FROM books WHERE rowid = ?", obj.lastID);
+    return get(db, "SELECT * FROM books WHERE rowid = ?", [obj.lastID]);
   })
   .then(function (msg) {
     console.log(msg);
@@ -29,11 +31,11 @@ run(db, "CREATE TABLE books (title TEXT NOT NULL)")
   .then(() => run(db, "INSERT INTO books (title) VALUES (?) ", null))
   .catch(function (err) {
     console.error("エラーが発生しました:", err.message);
-    return get(db, "SELECT * FROM bookss WHERE rowid = ?", 1);
+    return get(db, "SELECT * FROM bookss WHERE rowid = ?", [1]);
   })
   .then(function (obj) {
     console.log(`挿入された行のID: ${obj.lastID}`);
-    return get(db, "SELECT * FROM books WHERE rowid = ?", obj.lastID);
+    return get(db, "SELECT * FROM books WHERE rowid = ?", [obj.lastID]);
   })
   .catch(function (err) {
     console.error("エラーが発生しました:", err.message);

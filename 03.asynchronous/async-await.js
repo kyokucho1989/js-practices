@@ -12,14 +12,12 @@ async function promiseOk() {
   const insertedResult = await run(
     db,
     "INSERT INTO books (title) VALUES (?) ",
-    "本のタイトル"
+    ["本のタイトル"]
   );
   console.log(`挿入された行のID: ${insertedResult.lastID}`);
-  const selectedResult = await get(
-    db,
-    "SELECT * FROM books WHERE rowid = ?",
+  const selectedResult = await get(db, "SELECT * FROM books WHERE rowid = ?", [
     insertedResult.lastID
-  );
+  ]);
   console.log(selectedResult);
   run(db, "DROP TABLE books");
   console.log("テーブル削除完了");
@@ -36,22 +34,20 @@ async function promiseError() {
         null
       );
       console.log(`挿入された行のID: ${insertedResult.lastID}`);
-      selectedResult = await get(
-        db,
-        "SELECT * FROM books WHERE rowid = ?",
+      selectedResult = await get(db, "SELECT * FROM books WHERE rowid = ?", [
         insertedResult.lastID
-      );
+      ]);
     } catch (err) {
       console.error("エラーが発生しました:", err.message);
-      selectedResult = await get(db, "SELECT * FROM bookss WHERE rowid = ?", 1);
+      selectedResult = await get(db, "SELECT * FROM bookss WHERE rowid = ?", [
+        1
+      ]);
     }
     try {
       console.log(insertedResult);
-      selectedResult = await get(
-        db,
-        "SELECT * FROM books WHERE rowid = ?",
+      selectedResult = await get(db, "SELECT * FROM books WHERE rowid = ?", [
         insertedResult.lastID
-      );
+      ]);
       console.log(selectedResult);
     } catch (err) {
       console.error("エラーが発生しました:", err.message);
