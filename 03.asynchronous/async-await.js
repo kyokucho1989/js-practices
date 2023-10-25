@@ -17,7 +17,7 @@ async function promiseOk() {
     insertedBook.lastID
   ]);
   console.log(selectedBook);
-  run(db, "DROP TABLE books");
+  await run(db, "DROP TABLE books");
   console.log("テーブル削除完了");
 }
 
@@ -51,7 +51,7 @@ async function promiseError() {
   } catch (err) {
     console.error("エラーが発生しました:", err.message);
   } finally {
-    run(db, "DROP TABLE books");
+    await run(db, "DROP TABLE books");
     console.log("テーブル削除完了");
     db.close();
   }
