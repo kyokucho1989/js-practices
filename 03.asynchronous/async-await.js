@@ -36,7 +36,7 @@ async function promiseError() {
         insertedBook.lastID
       ]);
     } catch (err) {
-      console.error("エラーが発生しました:", err.message);
+      console.error(err.message);
       selectedBook = await get(db, "SELECT * FROM bookss WHERE rowid = ?", [1]);
     }
     try {
@@ -46,10 +46,10 @@ async function promiseError() {
       ]);
       console.log(selectedBook);
     } catch (err) {
-      console.error("エラーが発生しました:", err.message);
+      console.error(err.message);
     }
   } catch (err) {
-    console.error("エラーが発生しました:", err.message);
+    console.error(err.message);
   } finally {
     await run(db, "DROP TABLE books");
     console.log("テーブル削除完了");

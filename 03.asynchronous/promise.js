@@ -30,7 +30,7 @@ await timers.setTimeout(1000);
 run(db, "CREATE TABLE books (title TEXT NOT NULL)")
   .then(() => run(db, "INSERT INTO books (title) VALUES (?) ", null))
   .catch(function (err) {
-    console.error("エラーが発生しました:", err.message);
+    console.error(err.message);
     return get(db, "SELECT * FROM bookss WHERE rowid = ?", [1]);
   })
   .then(function (insertedBook) {
@@ -40,7 +40,7 @@ run(db, "CREATE TABLE books (title TEXT NOT NULL)")
     ]);
   })
   .catch(function (err) {
-    console.error("エラーが発生しました:", err.message);
+    console.error(err.message);
   })
   .then(() => run(db, "DROP TABLE books"))
   .then(() => console.log("テーブル削除完了"))
