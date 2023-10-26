@@ -27,27 +27,23 @@ await timers.setTimeout(1000);
 
 try {
   await run(db, "CREATE TABLE books (title TEXT NOT NULL)");
-  try {
-    insertedBook = await run(db, "INSERT INTO books (title) VALUES (?) ", null);
-    console.log(`挿入された行のID: ${insertedBook.lastID}`);
-    selectedBook = await get(db, "SELECT * FROM books WHERE rowid = ?", [
-      insertedBook.lastID
-    ]);
-  } catch (err) {
-    console.error(err.message);
-    selectedBook = await get(db, "SELECT * FROM bookss WHERE rowid = ?", [1]);
-  }
-  try {
-    console.log(insertedBook);
-    selectedBook = await get(db, "SELECT * FROM books WHERE rowid = ?", [
-      insertedBook.lastID
-    ]);
-    console.log(selectedBook);
-  } catch (err) {
-    console.error(err.message);
-  }
+  insertedBook = await run(db, "INSERT INTO books (title) VALUES (?) ", null);
 } catch (err) {
-  console.error(err.message);
+  if (err instanceof Error) {
+    console.error(err.message);
+  } else {
+    throw err;
+  }
+}
+try {
+  selectedBook = await get(db, "SELECT * FROM bookss WHERE rowid = ?", [1]);
+  console.log(insertedBook);
+} catch (err) {
+  if (err instanceof Error) {
+    console.error(err.message);
+  } else {
+    throw err;
+  }
 } finally {
   await run(db, "DROP TABLE books");
   console.log("テーブル削除完了");
