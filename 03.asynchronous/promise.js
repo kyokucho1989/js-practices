@@ -9,16 +9,16 @@ const db = new sqlite3.Database(":memory:");
 // エラーなし
 run(db, "CREATE TABLE books (title TEXT NOT NULL)")
   .then(() => run(db, "INSERT INTO books (title) VALUES (?)", ["本のタイトル"]))
-  .then(function (insertedBook) {
+  .then((insertedBook) => {
     console.log(`挿入された行のID: ${insertedBook.lastID}`);
     return get(db, "SELECT * FROM books WHERE rowid = ?", [
       insertedBook.lastID,
     ]);
   })
-  .then(function (selectedBook) {
+  .then((selectedBook) => {
     console.log(selectedBook);
+    run(db, "DROP TABLE books");
   })
-  .then(() => run(db, "DROP TABLE books"))
   .then(() => console.log("テーブル削除完了"));
 
 await timers.setTimeout(1000);
@@ -26,19 +26,21 @@ await timers.setTimeout(1000);
 // エラーあり
 run(db, "CREATE TABLE books (title TEXT NOT NULL)")
   .then(() => run(db, "INSERT INTO books (title) VALUES (?)", null))
-  .catch(function (err) {
+  .catch((err) => {
     console.error(err.message);
     return get(db, "SELECT * FROM bookss WHERE rowid = ?", [1]);
   })
-  .then(function (insertedBook) {
+  .then((insertedBook) => {
     console.log(`挿入された行のID: ${insertedBook.lastID}`);
     return get(db, "SELECT * FROM books WHERE rowid = ?", [
       insertedBook.lastID,
     ]);
   })
-  .catch(function (err) {
+  .catch((err) => {
     console.error(err.message);
   })
   .then(() => run(db, "DROP TABLE books"))
-  .then(() => console.log("テーブル削除完了"))
-  .then(() => db.close());
+  .then(() => {
+    console.log("テーブル削除完了");
+    db.close();
+  });
