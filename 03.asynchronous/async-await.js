@@ -41,8 +41,7 @@ try {
   } else {
     throw err;
   }
-} finally {
-  await run(db, "DROP TABLE books");
-  console.log("テーブル削除完了");
-  db.close();
 }
+await run(db, "DROP TABLE books");
+console.log("テーブル削除完了");
+db.close();

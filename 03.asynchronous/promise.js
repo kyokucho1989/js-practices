@@ -30,12 +30,6 @@ run(db, "CREATE TABLE books (title TEXT NOT NULL)")
     console.error(err.message);
     return get(db, "SELECT * FROM bookss WHERE rowid = ?", [1]);
   })
-  .then((insertedBook) => {
-    console.log(`挿入された行のID: ${insertedBook.lastID}`);
-    return get(db, "SELECT * FROM books WHERE rowid = ?", [
-      insertedBook.lastID,
-    ]);
-  })
   .catch((err) => {
     console.error(err.message);
   })
