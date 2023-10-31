@@ -22,7 +22,7 @@ await timers.setTimeout(1000);
 
 // コールバック エラーあり
 db.run("CREATE TABLE books (title TEXT NOT NULL)", () => {
-  db.run("INSERT INTO books (title) VALUES (null) ", function (err) {
+  db.run("INSERT INTO books (title) VALUES (null)", function (err) {
     if (err) {
       console.error(err.message);
     } else {

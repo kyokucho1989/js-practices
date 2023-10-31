@@ -17,7 +17,7 @@ run(db, "CREATE TABLE books (title TEXT NOT NULL)")
   })
   .then((selectedBook) => {
     console.log(selectedBook);
-    run(db, "DROP TABLE books");
+    return run(db, "DROP TABLE books");
   })
   .then(() => console.log("テーブル削除完了"));
 
@@ -32,8 +32,8 @@ run(db, "CREATE TABLE books (title TEXT NOT NULL)")
   })
   .catch((err) => {
     console.error(err.message);
+    return run(db, "DROP TABLE books");
   })
-  .then(() => run(db, "DROP TABLE books"))
   .then(() => {
     console.log("テーブル削除完了");
     db.close();
