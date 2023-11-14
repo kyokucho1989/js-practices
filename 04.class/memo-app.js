@@ -16,7 +16,7 @@ if (argv.d) {
   dataBase.deleteItem();
 }
 
-if (argv.y) {
+if (argv.l) {
   dataBase.displayAll();
 }
 
