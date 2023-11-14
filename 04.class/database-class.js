@@ -1,4 +1,3 @@
-import { run, get, all } from "./sqlite-function.js";
 import sqlite3 from "sqlite3";
 import pkg from "enquirer";
 
@@ -58,6 +57,42 @@ class DatabaseManager {
       memoInstance.firstRow(),
     ]);
   }
+}
+
+function run(db, sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(this);
+      }
+    });
+  });
+}
+
+function get(db, sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.get(sql, params, (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row);
+      }
+    });
+  });
+}
+
+function all(db, sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.all(sql, params, (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
 }
 
 export default DatabaseManager;
