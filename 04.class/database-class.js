@@ -9,15 +9,15 @@ class DatabaseManager {
   async databaseSet() {
     await run(
       db,
-      "CREATE TABLE IF NOT EXISTS items (id integer primary key autoincrement,content TEXT NOT NULL, firstrow TEXT NOT NULL)"
+      "CREATE TABLE IF NOT EXISTS items (id integer primary key autoincrement,content TEXT NOT NULL, firstline TEXT NOT NULL)"
     );
   }
 
   async selectItem(doing) {
-    let rows = await all(db, "SELECT id, firstrow FROM items");
+    let rows = await all(db, "SELECT id, firstline FROM items");
     let formattedRows = rows.map((item) => ({
       name: item.id,
-      message: item.firstrow,
+      message: item.firstline,
     }));
 
     const prompt = new Select({
@@ -45,16 +45,16 @@ class DatabaseManager {
   }
 
   async displayAll() {
-    let rows = await all(db, "SELECT firstrow FROM items");
+    let rows = await all(db, "SELECT firstline FROM items");
     rows.forEach((item) => {
-      console.log(item.firstrow);
+      console.log(item.firstline);
     });
   }
 
   async saveItem(memoInstance) {
-    await run(db, "INSERT INTO items (content, firstrow) VALUES (?, ?)", [
+    await run(db, "INSERT INTO items (content, firstline) VALUES (?, ?)", [
       memoInstance.memoContent,
-      memoInstance.firstRow(),
+      memoInstance.firstLine(),
     ]);
   }
 }

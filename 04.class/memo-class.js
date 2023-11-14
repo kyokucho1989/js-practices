@@ -7,7 +7,7 @@ class Memo {
     return this.memoContent;
   }
 
-  firstRow() {
+  firstLine() {
     return this.memoContent.split("\n")[0];
   }
 }
