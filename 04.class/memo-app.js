@@ -2,22 +2,25 @@
 
 import Memo from "./memo-class.js";
 import DatabaseManager from "./database-class.js";
+import CommandHandler from "./command-class.js";
 import minimist from "minimist";
 
 const argv = minimist(process.argv);
-const dataBase = await new DatabaseManager();
+const dataBase = new DatabaseManager();
+const command = new CommandHandler(dataBase);
 
-await dataBase.databaseSet();
+await command.databaseSet();
+
 if (argv.r) {
-  dataBase.displayDetail();
+  command.displayDetail();
 }
 
 if (argv.d) {
-  dataBase.deleteItem();
+  command.deleteItem();
 }
 
 if (argv.l) {
-  dataBase.displayAll();
+  command.displayAll();
 }
 
 if (!process.stdin.isTTY) {
@@ -30,7 +33,7 @@ if (!process.stdin.isTTY) {
   process.stdin.on("end", () => {
     insertMemo = insertMemo.slice(0, -1);
     const memo = new Memo(insertMemo);
-    dataBase.saveItem(memo);
+    command.saveItem(memo);
     console.log("追加しました");
   });
 }
