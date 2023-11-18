@@ -4,12 +4,12 @@ import Memo from "./memo-class.js";
 import DatabaseManager from "./database-class.js";
 import CommandHandler from "./command-class.js";
 import minimist from "minimist";
+import MemoRepository from "./memo-repository-class.js";
 
 const argv = minimist(process.argv);
 const dataBase = new DatabaseManager();
-const command = new CommandHandler(dataBase);
-
-await command.databaseSet();
+const memoRepository = new MemoRepository(dataBase);
+const command = new CommandHandler(memoRepository);
 
 if (argv.r) {
   command.displayDetail();

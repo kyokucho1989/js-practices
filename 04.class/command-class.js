@@ -3,20 +3,12 @@ import pkg from "enquirer";
 const { Select } = pkg;
 
 class CommandHandler {
-  constructor(databaseManager) {
-    this.databaseManager = databaseManager;
-  }
-
-  async databaseSet() {
-    await this.databaseManager.run(
-      "CREATE TABLE IF NOT EXISTS items (id integer primary key autoincrement,content TEXT NOT NULL, firstline TEXT NOT NULL)"
-    );
+  constructor(memoRepository) {
+    this.memoRepository = memoRepository;
   }
 
   async selectItem(doing) {
-    let rows = await this.databaseManager.all(
-      "SELECT id, firstline FROM items"
-    );
+    let rows = await this.memoRepository.extractAllFirstlineColumns();
     let formattedRows = rows.map((item) => ({
       name: item.id,
       message: item.firstline,
@@ -29,10 +21,7 @@ class CommandHandler {
     });
 
     const selectedId = await prompt.run();
-    const selectedItem = await this.databaseManager.get(
-      "SELECT * FROM items WHERE rowid = ?",
-      [selectedId]
-    );
+    const selectedItem = await this.memoRepository.selectRecordById(selectedId);
 
     return selectedItem;
   }
@@ -43,7 +32,7 @@ class CommandHandler {
   }
 
   async displayAll() {
-    let rows = await this.databaseManager.all("SELECT firstline FROM items");
+    let rows = await this.memoRepository.extractAllFirstlineColumns();
     rows.forEach((item) => {
       console.log(item.firstline);
     });
@@ -51,16 +40,11 @@ class CommandHandler {
 
   async deleteItem() {
     let selectedItem = await this.selectItem("delete");
-    return this.databaseManager.get("DELETE FROM items WHERE rowid = ?", [
-      selectedItem.id,
-    ]);
+    return this.memoRepository.deleteRecordById(selectedItem.id);
   }
 
   async saveItem(memoInstance) {
-    await this.databaseManager.run(
-      "INSERT INTO items (content, firstline) VALUES (?, ?)",
-      [memoInstance.memoContent, memoInstance.firstLine()]
-    );
+    await this.memoRepository.insertRecord(memoInstance);
   }
 }
 
