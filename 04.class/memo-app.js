@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import Memo from "./memo-class.js";
-import DatabaseManager from "./database-class.js";
-import CommandHandler from "./command-class.js";
+import Memo from "./memo.js";
+import DatabaseManager from "./database.js";
+import CommandHandler from "./command.js";
 import minimist from "minimist";
-import MemoRepository from "./memo-repository-class.js";
+import MemoRepository from "./memo-repository.js";
 
 const argv = minimist(process.argv);
 const dataBase = new DatabaseManager();
