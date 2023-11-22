@@ -10,6 +10,7 @@ const argv = minimist(process.argv);
 const dataBase = new DatabaseManager();
 const memoRepository = new MemoRepository(dataBase);
 const command = new CommandHandler(memoRepository);
+await memoRepository.databaseSet();
 
 if (argv.r) {
   command.displayDetail();
