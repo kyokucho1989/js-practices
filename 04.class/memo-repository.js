@@ -1,7 +1,6 @@
 class MemoRepository {
   constructor(databaseManager) {
     this.databaseManager = databaseManager;
-    this.databaseSet();
   }
 
   async databaseSet() {
