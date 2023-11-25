@@ -3,7 +3,7 @@ class MemoRepository {
     this.databaseManager = databaseManager;
   }
 
-  async databaseSet() {
+  async initializeDatabase() {
     await this.databaseManager.run(
       "CREATE TABLE IF NOT EXISTS items (id integer primary key autoincrement,content TEXT NOT NULL, firstline TEXT NOT NULL)"
     );
